@@ -73,10 +73,28 @@ export default function Page() {
       </header>
 
       <main id="home">
-        <section className="hero">
-          <video className="hero__video" autoPlay muted loop playsInline poster="/images/kl-skyline-hero.jpg" aria-hidden="true">
-            <source src="/videos/kuala-lumpur-skyline.mp4" type="video/mp4" />
-          </video>
+        <section className="hero hero--greens">
+          <div className="hero__motion" aria-hidden="true">
+            <svg className="hero__motion-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <radialGradient id="grnA" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#3f9d6e" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#3f9d6e" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="grnB" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#1f8f86" stopOpacity="0.7" />
+                  <stop offset="100%" stopColor="#1f8f86" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              <circle className="blob blob--a" cx="360" cy="300" r="430" fill="url(#grnA)" />
+              <circle className="blob blob--b" cx="1120" cy="600" r="470" fill="url(#grnB)" />
+              <g className="hero__motif" fill="none" stroke="rgba(173,222,194,0.16)" strokeWidth="1.4">
+                <path d="M-160 660 C 160 580, 420 740, 720 640 S 1280 560, 1620 660" />
+                <path d="M-160 720 C 180 640, 460 800, 760 700 S 1300 620, 1620 720" />
+                <path d="M-160 780 C 140 710, 440 860, 740 760 S 1320 680, 1620 780" />
+              </g>
+            </svg>
+          </div>
           <div className="hero__overlay" />
           <div className="hero__content">
             <div className="hero__copy hero__copy--animate">
