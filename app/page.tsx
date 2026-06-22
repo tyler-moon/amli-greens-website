@@ -171,7 +171,7 @@ export default function Page() {
               <p className="eyebrow">Contact</p>
               <h2>Partnership and offtake enquiries.</h2>
               <address>
-                Wisma AMLI, 14&ndash;14C, Jalan 20/38A, Off Jalan Segambut
+                Wisma AMLI, 14, 14A, 14B, 14C, Jalan 20/38A, Off Jalan Segambut
                 <br />
                 Taman Sri Sinar, 51200 Kuala Lumpur, Malaysia
               </address>
