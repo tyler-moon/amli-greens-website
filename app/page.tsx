@@ -54,6 +54,36 @@ export default function Page() {
     };
   }, []);
 
+  useEffect(() => {
+    const nums = document.querySelectorAll<HTMLElement>("[data-count]");
+    nums.forEach((el) => { el.textContent = "0"; });
+    const fmt = (el: HTMLElement, n: number) =>
+      el.dataset.format === "comma" ? Math.round(n).toLocaleString() : Math.round(n).toString();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          const el = en.target as HTMLElement;
+          obs.unobserve(el);
+          const target = parseFloat(el.dataset.count || "0");
+          const start = performance.now();
+          const dur = 1500;
+          const step = (now: number) => {
+            const p = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = fmt(el, target * eased);
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = el.dataset.display ?? fmt(el, target);
+          };
+          requestAnimationFrame(step);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    nums.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <>
       <header className="site-header">
@@ -100,6 +130,26 @@ export default function Page() {
           </div>
         </section>
 
+        <section className="section section--stats" data-reveal>
+          <div className="section__inner">
+            <p className="eyebrow stats-band__eyebrow">By the numbers</p>
+            <div className="stats-band">
+              <div className="stat" data-reveal>
+                <p className="stat__num"><span data-count="250000" data-format="comma" data-display="250,000">250,000</span></p>
+                <p className="stat__label">Tonnes / year FAME capacity</p>
+              </div>
+              <div className="stat" data-reveal style={{ transitionDelay: "80ms" }}>
+                <p className="stat__num"><span data-count="2" data-display="2">2</span></p>
+                <p className="stat__label">Clean fuels — biofuel &amp; SAF</p>
+              </div>
+              <div className="stat" data-reveal style={{ transitionDelay: "160ms" }}>
+                <p className="stat__num"><span data-count="2050" data-display="2050">2050</span></p>
+                <p className="stat__label">Net-zero aligned</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section section--mist" id="about" data-reveal>
           <div className="section__inner">
             <div className="section-heading section-heading--wide">
@@ -134,20 +184,38 @@ export default function Page() {
           </div>
         </section>
 
+        <section className="statement-band" data-reveal>
+          <img className="statement-band__bg" src="/images/greens-facility.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <div className="statement-band__overlay" aria-hidden="true" />
+          <div className="statement-band__inner">
+            <p className="eyebrow eyebrow--light">Industrial scale</p>
+            <h2>Clean fuel, built at scale.</h2>
+            <p>
+              A 250,000-tonne/yr FAME biofuel facility at Kuantan port, with a Sustainable
+              Aviation Fuel plant in development — real assets advancing Malaysia&rsquo;s
+              energy transition, aligned with the National Energy Transition Roadmap and
+              net-zero 2050.
+            </p>
+          </div>
+        </section>
+
         <section className="section section--stone" id="why" data-reveal>
           <div className="section__inner">
             <div className="section-heading section-heading--wide">
               <p className="eyebrow">Why It Matters</p>
               <h2>Aligned with a national priority.</h2>
             </div>
-            <div className="feature-grid" aria-label="Why it matters">
+            <ol className="practice-list" aria-label="Why it matters">
               {values.map((v, i) => (
-                <article className="feature-card" key={v.label} data-reveal style={{ transitionDelay: `${i * 60}ms` }}>
-                  <h3>{v.label}</h3>
-                  <p>{v.text}</p>
-                </article>
+                <li className="practice-row" key={v.label} data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
+                  <span className="practice-row__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  <div className="practice-row__body">
+                    <h3>{v.label}</h3>
+                    <p>{v.text}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
